@@ -10,6 +10,7 @@ import TATPage from "./pages/TAT";
 import WATPage from "./pages/WAT";
 import SRTPage from "./pages/SRT";
 import SDPage from "./pages/SD";
+import AIPracticePage from "./pages/AIPractice";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
