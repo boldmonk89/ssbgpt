@@ -1,4 +1,4 @@
-import { Shield, ArrowRight, Sparkles, Menu, FileText, MessageSquare, Zap, UserCircle, ClipboardList } from 'lucide-react';
+import { Shield, ArrowRight, Sparkles, Menu, FileText, MessageSquare, Zap, UserCircle, ClipboardList, BrainCircuit } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const TEST_CARDS = [
