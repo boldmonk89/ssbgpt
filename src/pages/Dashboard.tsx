@@ -1,15 +1,17 @@
+import { useState, useEffect } from 'react';
 import { Shield, ArrowRight, Sparkles, Menu, FileText, MessageSquare, Zap, UserCircle, ClipboardList, BrainCircuit } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
+import slide1 from '@/assets/slideshow/slide1.jpg';
+import slide2 from '@/assets/slideshow/slide2.jpg';
+import slide3 from '@/assets/slideshow/slide3.jpg';
+import slide4 from '@/assets/slideshow/slide4.jpg';
+import slide5 from '@/assets/slideshow/slide5.jpg';
+import slide6 from '@/assets/slideshow/slide6.jpg';
+
+const SLIDES = [slide1, slide2, slide3, slide4, slide5, slide6];
+
 const TEST_CARDS = [
-  {
-    label: 'PIQ',
-    path: '/piq',
-    icon: UserCircle,
-    title: 'Personal Information Questionnaire',
-    desc: 'Upload your PIQ form and get an AI-extracted psychological profile with OLQ mapping, personality traits, and leadership indicators.',
-    color: '#c9a84c',
-  },
   {
     label: 'TAT',
     path: '/tat',
@@ -42,21 +44,51 @@ const TEST_CARDS = [
     desc: 'Write all 5 SD paragraphs — Parents, Teachers, Friends, Self, and Qualities to develop. Get authenticity analysis and OLQ coverage.',
     color: '#8e44ad',
   },
+  {
+    label: 'PIQ',
+    path: '/piq',
+    icon: UserCircle,
+    title: 'Personal Information Questionnaire',
+    desc: 'Upload your PIQ form and get an AI-extracted psychological profile with OLQ mapping, personality traits, and leadership indicators.',
+    color: '#c9a84c',
+  },
 ];
 
 export default function DashboardPage() {
   const navigate = useNavigate();
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % SLIDES.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <div className="space-y-10 scroll-reveal">
-      {/* Hero — Liquid Glass */}
-      <div className="glass-card glow-gold text-center py-10 md:py-14 relative overflow-hidden">
+      {/* Hero — Liquid Glass with Slideshow */}
+      <div className="glass-card glow-gold text-center py-10 md:py-14 relative overflow-hidden min-h-[320px]">
+        {/* Slideshow Background */}
+        {SLIDES.map((src, i) => (
+          <div
+            key={i}
+            className="absolute inset-0 transition-opacity duration-[2000ms] ease-in-out"
+            style={{
+              opacity: currentSlide === i ? 1 : 0,
+              backgroundImage: `url(${src})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          />
+        ))}
+        {/* Dark overlay for text readability */}
+        <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
+
         <div className="absolute top-6 left-8 h-16 w-16 rounded-full opacity-20 float-slow"
           style={{ background: 'radial-gradient(circle, hsl(var(--gold) / 0.4), transparent)' }} />
         <div className="absolute bottom-8 right-12 h-12 w-12 rounded-full opacity-15 float-medium"
           style={{ background: 'radial-gradient(circle, hsl(var(--accent) / 0.4), transparent)' }} />
-        <div className="absolute top-1/2 right-1/4 h-8 w-8 rounded-full opacity-10 float-fast"
-          style={{ background: 'radial-gradient(circle, hsl(var(--foreground) / 0.3), transparent)' }} />
 
         <div className="relative z-10">
           <div className="flex justify-center mb-5">
@@ -72,6 +104,21 @@ export default function DashboardPage() {
           <p className="text-muted-foreground font-body text-sm md:text-base max-w-2xl mx-auto leading-relaxed">
             Your SSB psychological tests evaluated on <strong className="text-gold">15 Officer Like Qualities</strong> — the core traits the Services Selection Board uses to determine your officer potential.
           </p>
+
+          {/* Slide indicators */}
+          <div className="flex justify-center gap-1.5 mt-4">
+            {SLIDES.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrentSlide(i)}
+                className="h-1.5 rounded-full transition-all duration-500"
+                style={{
+                  width: currentSlide === i ? '24px' : '6px',
+                  background: currentSlide === i ? 'hsl(var(--gold))' : 'hsl(var(--foreground) / 0.2)',
+                }}
+              />
+            ))}
+          </div>
 
           <div className="flex justify-center mt-6">
             <button
@@ -125,11 +172,11 @@ export default function DashboardPage() {
                     <span className="font-heading font-bold text-xl" style={{ color: test.color }}>
                       {test.label}
                     </span>
-                    <span className="text-muted-foreground font-body text-xs hidden sm:inline">
+                    <span className="text-muted-foreground font-body text-xs hidden sm:inline" style={{ fontStyle: 'normal' }}>
                       {test.title}
                     </span>
                   </div>
-                  <p className="font-body text-sm text-muted-foreground leading-relaxed">
+                  <p className="font-body text-sm text-muted-foreground leading-relaxed" style={{ fontStyle: 'normal' }}>
                     {test.desc}
                   </p>
                 </div>
@@ -146,7 +193,7 @@ export default function DashboardPage() {
           <BrainCircuit className="h-6 w-6 text-gold" />
         </div>
         <h3 className="font-heading font-bold text-lg text-foreground mb-2">AI Practice Mode</h3>
-        <p className="font-body text-sm text-muted-foreground leading-relaxed max-w-lg mx-auto">
+        <p className="font-body text-sm text-muted-foreground leading-relaxed max-w-lg mx-auto" style={{ fontStyle: 'normal' }}>
           Upload a TAT image to get AI-generated stories, enter a word for WAT responses, or type a situation for SRT reactions — all with embedded OLQs.
         </p>
         <div className="flex justify-center mt-5">
@@ -164,7 +211,7 @@ export default function DashboardPage() {
           <ClipboardList className="h-6 w-6 text-gold" />
         </div>
         <h3 className="font-heading font-bold text-lg text-foreground mb-2">Full Psych Analysis</h3>
-        <p className="font-body text-sm text-muted-foreground leading-relaxed max-w-lg mx-auto">
+        <p className="font-body text-sm text-muted-foreground leading-relaxed max-w-lg mx-auto" style={{ fontStyle: 'normal' }}>
           Upload a single PDF with all your tests, or combine individual test analyses into one comprehensive SSB assessment report with cross-test consistency check and 15 OLQ ratings.
         </p>
         <div className="flex justify-center mt-5">

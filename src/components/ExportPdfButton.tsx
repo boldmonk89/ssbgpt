@@ -8,7 +8,7 @@ interface ExportPdfButtonProps {
   className?: string;
 }
 
-export function ExportPdfButton({ content, title = 'SSB Analysis Report', className = '' }: ExportPdfButtonProps) {
+export function ExportPdfButton({ content, title = 'SSBGPT Analysis Report', className = '' }: ExportPdfButtonProps) {
   const [exporting, setExporting] = useState(false);
 
   const exportToPdf = async () => {
@@ -19,7 +19,6 @@ export function ExportPdfButton({ content, title = 'SSB Analysis Report', classN
 
     setExporting(true);
     try {
-      // Build HTML content for print
       const styledHtml = `
 <!DOCTYPE html>
 <html>
@@ -27,12 +26,12 @@ export function ExportPdfButton({ content, title = 'SSB Analysis Report', classN
   <meta charset="utf-8">
   <title>${title}</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Crimson+Pro:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
     
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
     body {
-      font-family: 'Crimson Pro', Georgia, serif;
+      font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
       color: #1a1a2e;
       background: #fff;
       padding: 48px;
@@ -48,11 +47,12 @@ export function ExportPdfButton({ content, title = 'SSB Analysis Report', classN
     }
     
     .header h1 {
-      font-family: 'Crimson Text', Georgia, serif;
-      font-size: 26px;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      font-size: 28px;
       font-weight: 700;
       color: #1a1a2e;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.03em;
       margin-bottom: 6px;
     }
     
@@ -61,6 +61,7 @@ export function ExportPdfButton({ content, title = 'SSB Analysis Report', classN
       color: #888;
       letter-spacing: 0.15em;
       text-transform: uppercase;
+      font-family: -apple-system, 'SF Pro Display', sans-serif;
     }
     
     .header .date {
@@ -69,10 +70,10 @@ export function ExportPdfButton({ content, title = 'SSB Analysis Report', classN
       margin-top: 8px;
     }
     
-    h1 { font-family: 'Crimson Text', serif; font-size: 22px; font-weight: 700; color: #c9a84c; margin: 28px 0 12px; }
-    h2 { font-family: 'Crimson Text', serif; font-size: 18px; font-weight: 700; color: #2e6db4; margin: 24px 0 10px; border-left: 3px solid #c9a84c; padding-left: 12px; }
-    h3 { font-family: 'Crimson Text', serif; font-size: 15px; font-weight: 700; color: #1a1a2e; margin: 18px 0 8px; }
-    h4 { font-family: 'Crimson Text', serif; font-size: 14px; font-weight: 600; color: #444; margin: 14px 0 6px; }
+    h1 { font-family: 'Playfair Display', serif; font-style: italic; font-size: 22px; font-weight: 700; color: #c9a84c; margin: 28px 0 12px; }
+    h2 { font-family: 'Playfair Display', serif; font-style: italic; font-size: 18px; font-weight: 700; color: #2e6db4; margin: 24px 0 10px; border-left: 3px solid #c9a84c; padding-left: 12px; }
+    h3 { font-family: 'Playfair Display', serif; font-style: italic; font-size: 15px; font-weight: 700; color: #1a1a2e; margin: 18px 0 8px; }
+    h4 { font-family: 'Playfair Display', serif; font-style: italic; font-size: 14px; font-weight: 600; color: #444; margin: 14px 0 6px; }
     
     p { margin: 6px 0; }
     
@@ -105,14 +106,14 @@ export function ExportPdfButton({ content, title = 'SSB Analysis Report', classN
 </head>
 <body>
   <div class="header">
-    <h1>☸ AI PSYCH ANALYSIS</h1>
+    <h1>SSBGPT</h1>
     <div class="subtitle">SSB Psychological Assessment Report</div>
     <div class="date">Generated: ${new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' })}</div>
   </div>
   <div class="separator"></div>
   ${convertMarkdownToHtml(content)}
   <div class="footer">
-    AI PSYCH ANALYSIS • 15 OLQ Framework • Confidential Assessment Report
+    SSBGPT — 15 OLQ Framework — Confidential Assessment Report
   </div>
 </body>
 </html>`;
@@ -126,7 +127,6 @@ export function ExportPdfButton({ content, title = 'SSB Analysis Report', classN
       printWindow.document.write(styledHtml);
       printWindow.document.close();
 
-      // Wait for fonts to load then trigger print
       setTimeout(() => {
         printWindow.print();
       }, 800);
@@ -153,6 +153,7 @@ export function ExportPdfButton({ content, title = 'SSB Analysis Report', classN
 
 function convertMarkdownToHtml(text: string): string {
   return text
+    .replace(/\*\*\*/g, '') // Remove all *** 
     .split('\n')
     .map((line) => {
       if (line.startsWith('#### ')) return `<h4>${line.slice(5)}</h4>`;
@@ -165,7 +166,6 @@ function convertMarkdownToHtml(text: string): string {
         return `<li>${line.replace(/^[-•]\s/, '')}</li>`;
       if (line.startsWith('| ')) return `<p style="font-family:monospace;font-size:11px;color:#666;">${line}</p>`;
       if (line.trim() === '') return '<br/>';
-      // Bold
       const processed = line.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
       return `<p>${processed}</p>`;
     })
