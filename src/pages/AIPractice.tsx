@@ -76,6 +76,13 @@ COMMON MISTAKES TO AVOID:
 ✗ Do not add problems or solutions not connected to the picture
 ✗ Do not write fantasy or wish-fulfillment endings
 ✗ Do not force secularism in naming
+✗ NEVER show hero as weak, under pressure, or seeking help from others — hero must be PROACTIVE and HELPING others
+✗ Do not write "he was under pressure so he took help" — instead show hero taking initiative confidently
+
+NOTE — TAT vs PPDT:
+- TAT is LONGER (120-150 words): reveals deeper personality, motives, emotional maturity, consistency across stories
+- PPDT is SHORT (60-80 words): tests communication, leadership, group dynamics
+- TAT stories should have rich detail and emotional depth — not just actions
 
 OUTPUT FORMAT:
 **Story [N] — Theme: [Theme Name]**
